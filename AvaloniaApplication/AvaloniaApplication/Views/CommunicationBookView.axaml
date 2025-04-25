@@ -1,0 +1,150 @@
+﻿<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:vm="clr-namespace:AvaloniaApplication.ViewModels"
+             xmlns:models="clr-namespace:AvaloniaApplication.Models"
+             mc:Ignorable="d" d:DesignWidth="400" d:DesignHeight="800"
+             x:DataType="vm:CommunicationBookViewModel"
+             x:Class="AvaloniaApplication.Views.CommunicationBookView">
+    <Grid RowDefinitions="Auto,Auto,*">
+        <!-- 顶部标题 -->
+        <TextBlock Grid.Row="0" 
+                   Text="通讯录" 
+                   FontSize="18"  x:Name="Header"
+                   FontWeight="Bold"
+                   HorizontalAlignment="Center"
+                   Margin="0,10"/>
+        
+        <!-- 搜索框 -->
+        <TextBox Grid.Row="1"
+                 Margin="10,5"
+                 Watermark="搜索"
+                 Background="Transparent"
+                 CornerRadius="4"/>
+
+        <!-- 主要内容区域 -->
+        <Grid Grid.Row="2" ColumnDefinitions="*,Auto">
+            <!-- 左侧联系人列表 -->
+            <ScrollViewer>
+                <StackPanel>
+                    <!-- 功能按钮区 -->
+                    <StackPanel Margin="0,10">
+                        <Button Classes="functionBtn">
+                            <StackPanel Orientation="Horizontal" Spacing="10">
+                                <Border Classes="iconBorder" Background="#F8C77E">
+                                    <PathIcon Data="{StaticResource person_add}" Foreground="White"/>
+                                </Border>
+                                <TextBlock Text="新的朋友" VerticalAlignment="Center"/>
+                            </StackPanel>
+                        </Button>
+                        
+                        <Button Classes="functionBtn">
+                            <StackPanel Orientation="Horizontal" Spacing="10">
+                                <Border Classes="iconBorder" Background="#8A8FF8">
+                                    <PathIcon Data="{StaticResource chat}" Foreground="White"/>
+                                </Border>
+                                <TextBlock Text="仅聊天的朋友" VerticalAlignment="Center"/>
+                            </StackPanel>
+                        </Button>
+                        
+                        <Button Classes="functionBtn">
+                            <StackPanel Orientation="Horizontal" Spacing="10">
+                                <Border Classes="iconBorder" Background="#70C94F">
+                                    <PathIcon Data="{StaticResource group}" Foreground="White"/>
+                                </Border>
+                                <TextBlock Text="群聊" VerticalAlignment="Center"/>
+                            </StackPanel>
+                        </Button>
+                    </StackPanel>
+
+                    <!-- 联系人列表 -->
+                    <ItemsControl x:Name="userControl" ItemsSource="{Binding Contacts}">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate DataType="models:ContactGroup">
+                                <StackPanel Name="{Binding Group}">
+                                    <!-- 分组标题 -->
+                                    <TextBlock Text="{Binding Group}"
+                                             FontWeight="Bold"
+                                             Margin="10,5"
+                                             Background="Transparent"/>
+                                    <!-- 联系人项 -->
+                                    <ItemsControl ItemsSource="{Binding Items}">
+                                        <ItemsControl.ItemTemplate>
+                                            <DataTemplate DataType="models:Contact">
+                                                <Button Classes="contactBtn" Click="GoViewClick" Tag="{Binding}">
+                                                    <Grid ColumnDefinitions="Auto,*" Margin="10,5">
+                                                        <Image Grid.Column="0" 
+                                                               Source="{Binding Avatar}"
+                                                               Width="40" Height="40"
+                                                               Margin="0,0,10,0"/>
+                                                        <TextBlock Grid.Column="1"
+                                                                 Text="{Binding Name}"
+                                                                 VerticalAlignment="Center"/>
+                                                    </Grid>
+                                                </Button>
+                                            </DataTemplate>
+                                        </ItemsControl.ItemTemplate>
+                                    </ItemsControl>
+                                </StackPanel>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </StackPanel>
+            </ScrollViewer>
+
+            <!-- 右侧字母导航 -->
+            <ItemsControl Grid.Column="1" VerticalAlignment="Center"
+                         ItemsSource="{Binding Letters}"
+                         Margin="0,0,5,0">
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <StackPanel/>
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <Button Content="{Binding}" 
+                                Click="ScrHelperClick"
+                                Tag="{Binding}"
+                                Padding="0"
+                                FontSize="10" 
+                                Background="Transparent"
+                                HorizontalAlignment="Center"
+                                Margin="1"/>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+        </Grid>
+    </Grid>
+
+    <!-- 样式 -->
+    <UserControl.Styles>
+        <Style Selector="Button.functionBtn">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Padding" Value="10"/>
+            <Setter Property="HorizontalAlignment" Value="Stretch"/>
+        </Style>
+        
+        <Style Selector="Button.contactBtn">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="HorizontalAlignment" Value="Stretch"/>
+            <Setter Property="HorizontalContentAlignment" Value="Left"/>
+        </Style>
+
+        <Style Selector="Border.iconBorder">
+            <Setter Property="Width" Value="40"/>
+            <Setter Property="Height" Value="40"/>
+            <Setter Property="CornerRadius" Value="4"/>
+        </Style>
+    </UserControl.Styles>
+
+    <!-- 图标资源 -->
+    <UserControl.Resources>
+        <StreamGeometry x:Key="person_add">M15 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm-9-2V7H4v3H1v2h3v3h2v-3h3v-2H6zm9 4c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z</StreamGeometry>
+        <StreamGeometry x:Key="chat">M20 2H4c-1.1 0-1.99.9-1.99 2L2 22l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zM6 9h12v2H6V9zm8 5H6v-2h8v2zm4-6H6V6h12v2z</StreamGeometry>
+        <StreamGeometry x:Key="group">M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z</StreamGeometry>
+    </UserControl.Resources>
+</UserControl>

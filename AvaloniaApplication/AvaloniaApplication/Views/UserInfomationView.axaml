@@ -1,0 +1,130 @@
+﻿<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:vm="clr-namespace:AvaloniaApplication.ViewModels"
+             mc:Ignorable="d" d:DesignWidth="400" d:DesignHeight="800"
+             x:DataType="vm:UserInfomationViewModel"
+             x:Class="AvaloniaApplication.Views.UserInfomationView">
+
+    <UserControl.Resources>
+        <StreamGeometry x:Key="qr_code">M3,11H5V13H3V11M11,5H13V7H11V5M9,11H13V15H11V13H9V11M15,11H17V13H19V11H21V13H19V15H21V19H19V21H17V19H13V21H11V17H15V15H17V13H15V11M19,19V15H17V19H19M15,3H21V9H15V3M17,5V7H19V5H17M3,3H9V9H3V3M5,5V7H7V5H5M3,15H9V21H3V15M5,17V19H7V17H5Z</StreamGeometry>
+        <StreamGeometry x:Key="right_icon">M8.59,16.58L13.17,12L8.59,7.41L10,6L16,12L10,18L8.59,16.58Z</StreamGeometry>
+        <StreamGeometry x:Key="back_regular">
+            M371.097252 511.398532l408.998532-408.998532c23.457269-23.457269 23.457269-61.34978 0-84.807048C756.638515-5.864317 718.746004-5.864317 695.288735 17.592952l-451.101321 451.101321s-0.601468 0-0.601469 0.601469C231.556577 481.32511 226.143361 496.361821 226.143361 512s6.014684 30.67489 17.442584 42.704258c0 0 0.601468 0 0.601469 0.601469l451.101321 451.101321c23.457269 23.457269 61.34978 23.457269 84.807049 0s23.457269-61.34978 0-84.807048L371.097252 511.398532z
+        </StreamGeometry>
+    </UserControl.Resources>
+
+    <Grid RowDefinitions="Auto,*">
+        <Grid.Background>
+            <LinearGradientBrush StartPoint="0%,0%" EndPoint="100%,100%">
+                <GradientStop Offset="0" Color="#1a237e" />
+                <GradientStop Offset="1" Color="#0d47a1" />
+            </LinearGradientBrush>
+        </Grid.Background>
+        <!-- 顶部标题栏 -->
+        <Grid Grid.Row="0" DockPanel.Dock="Top" Height="50" Margin="0,10">
+            <StackPanel x:Name="Header" Orientation="Horizontal" VerticalAlignment="Center" Margin="16,0">
+                <PathIcon Tapped="BackListView"  Data="{StaticResource back_regular}"></PathIcon>
+            </StackPanel>
+        </Grid>
+
+        <!-- 主要内容区域 -->
+        <ScrollViewer Grid.Row="1">
+            <StackPanel Spacing="10">
+                <!-- 头像和名称区域 -->
+                <Button Classes="infoButton" Height="80">
+                    <Grid ColumnDefinitions="Auto,*,Auto" Margin="15,0">
+                        <Image Grid.Column="0"
+                               Source="{Binding Contact.Avatar}"
+                               Width="60" Height="60"
+                               Margin="0,0,10,0" />
+                        <StackPanel Grid.Column="1"
+                                    VerticalAlignment="Center"
+                                    Spacing="5">
+                            <TextBlock Text="{Binding Contact.Name}"
+                                       FontSize="16" Foreground="Black" />
+                            <!-- <TextBlock Text="{Binding Contact.WxId}"  -->
+                            <!--          Foreground="Gray" -->
+                            <!--          FontSize="12"/> -->
+                        </StackPanel>
+                        <PathIcon Grid.Column="2"
+                                  Data="{StaticResource qr_code}"
+                                  Width="24" Height="24" />
+                    </Grid>
+                </Button>
+
+                <!-- 更多信息 -->
+                <Grid Classes="infoGrid" Height="50">
+                    <Grid ColumnDefinitions="*,Auto" Margin="15,0">
+                        <TextBlock Text="地区" Classes="infoText"
+                                   VerticalAlignment="Center" />
+                        <StackPanel Grid.Column="1"
+                                    Orientation="Horizontal"
+                                    Spacing="5">
+                            <TextBlock Text="中国" HorizontalAlignment="Center" VerticalAlignment="Center"
+                                       Foreground="Gray" />
+                            <!-- <PathIcon Data="{StaticResource right_icon}"/> -->
+                        </StackPanel>
+                    </Grid>
+                </Grid>
+                <Grid Classes="infoGrid" Height="50">
+                    <Grid ColumnDefinitions="*,Auto" Margin="15,0">
+                        <TextBlock Text="资料" Classes="infoText"
+                                   VerticalAlignment="Center" />
+                        <StackPanel Grid.Column="1"
+                                    Orientation="Horizontal"
+                                    Spacing="5">
+
+                            <PathIcon Data="{StaticResource right_icon}" />
+                        </StackPanel>
+                    </Grid>
+                </Grid>
+                <Grid Classes="infoGrid" Height="50">
+                    <Grid ColumnDefinitions="*,Auto" Margin="15,0">
+                        <TextBlock Text="权限" Classes="infoText"
+                                   VerticalAlignment="Center" />
+                        <StackPanel Grid.Column="1"
+                                    Orientation="Horizontal"
+                                    Spacing="5">
+
+                            <PathIcon  Data="{StaticResource right_icon}" />
+                        </StackPanel>
+                    </Grid>
+                </Grid>
+                <Button Command="{Binding SendMesCommand}" Classes="infoButton" Height="50">
+                    <Grid Margin="15,0">
+                        <StackPanel
+                            Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center"
+                            Spacing="5">
+                            <TextBlock Classes="infoText" FontWeight="Bold">发信息</TextBlock>
+                        </StackPanel>
+                    </Grid>
+                </Button>
+
+            </StackPanel>
+        </ScrollViewer>
+    </Grid>
+
+    <UserControl.Styles>
+        <Style Selector="Button.infoButton">
+            <Setter Property="Background" Value="#2B3592" />
+            <Setter Property="BorderThickness" Value="0" />
+            <Setter Property="HorizontalAlignment" Value="Stretch" />
+            <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+            <Setter Property="CornerRadius" Value="0" />
+        </Style>
+        <Style Selector="Grid.infoGrid">
+            <Setter Property="Background" Value="#2B3592" />
+            <Setter Property="HorizontalAlignment" Value="Stretch" />
+        </Style>
+        
+        <Style Selector="TextBlock.infoText">
+            <Setter Property="Foreground" Value="White"></Setter>
+        </Style>
+        <Style Selector="PathIcon">
+            <Setter Property="Foreground" Value="White"></Setter>
+        </Style>
+    </UserControl.Styles>
+
+</UserControl>

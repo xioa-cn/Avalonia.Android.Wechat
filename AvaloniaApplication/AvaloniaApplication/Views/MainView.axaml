@@ -1,0 +1,66 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:vm="clr-namespace:AvaloniaApplication.ViewModels"
+             xmlns:com="clr-namespace:AvaloniaApplication.Views.Components"
+             mc:Ignorable="d" d:DesignWidth="400" d:DesignHeight="800"
+             x:Class="AvaloniaApplication.Views.MainView"
+             xmlns:prism="http://prismlibrary.com/"
+             x:DataType="vm:MainViewModel"
+             Background="#1a237e">
+    <Design.DataContext>
+        <vm:MainViewModel />
+    </Design.DataContext>
+
+    <Panel>
+        <Grid RowDefinitions="*" Margin="0" ClipToBounds="False">
+            <Grid.Background>
+                <LinearGradientBrush StartPoint="0%,0%" EndPoint="100%,100%">
+                    <GradientStop Offset="0" Color="#1a237e" />
+                    <GradientStop Offset="1" Color="#0d47a1" />
+                </LinearGradientBrush>
+            </Grid.Background>
+
+            <!-- 主要内容 -->
+            <Grid RowDefinitions="*,Auto" Margin="0,20,0,0">
+               
+
+               
+                <ContentControl prism:RegionManager.RegionName="{x:Static vm:BaseViewModel.HomeRegion}"
+                                Grid.Row="0"
+                               
+                                Margin="0"
+                                HorizontalAlignment="Stretch"
+                                VerticalAlignment="Stretch"
+                                HorizontalContentAlignment="Stretch"
+                                VerticalContentAlignment="Stretch" />
+                <!-- 底部导航栏 -->
+                <Border Grid.Row="1" Background="#2a3492" Padding="20">
+                    <com:TabBar />
+                </Border>
+            </Grid>
+        </Grid>
+    </Panel>
+    <UserControl.Styles>
+        <Style Selector="Button.menuButton">
+            <Setter Property="Background" Value="#2a3492" />
+            <Setter Property="Foreground" Value="White" />
+            <Setter Property="Padding" Value="15" />
+            <Setter Property="CornerRadius" Value="10" />
+            <Setter Property="HorizontalAlignment" Value="Stretch" />
+        </Style>
+        <Style Selector="PathIcon.navPath">
+            <Setter Property="Foreground" Value="White"></Setter>
+        </Style>
+
+        <Style Selector="Button.navButton">
+            <Setter Property="Background" Value="Transparent" />
+            <Setter Property="Foreground" Value="#6b75d1" />
+        </Style>
+        <Style Selector="PathIcon">
+            <Setter Property="Width" Value="20" />
+            <Setter Property="Height" Value="20" />
+        </Style>
+    </UserControl.Styles>
+</UserControl>

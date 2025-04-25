@@ -1,0 +1,125 @@
+﻿<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:viewModels="clr-namespace:AvaloniaApplication.ViewModels"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             xmlns:converters="clr-namespace:AvaloniaApplication.Converters"
+             x:DataType="viewModels:DialogueViewModel"
+             x:Class="AvaloniaApplication.Views.DialogueView">
+    <UserControl.Resources>
+        <converters:DialogueUserConverter x:Key="DialogueUserConverter"></converters:DialogueUserConverter>
+        <converters:DialogueTextConverter x:Key="DialogueTextConverter"></converters:DialogueTextConverter>
+        <StreamGeometry x:Key="back_regular">
+            M371.097252 511.398532l408.998532-408.998532c23.457269-23.457269 23.457269-61.34978 0-84.807048C756.638515-5.864317 718.746004-5.864317 695.288735 17.592952l-451.101321 451.101321s-0.601468 0-0.601469 0.601469C231.556577 481.32511 226.143361 496.361821 226.143361 512s6.014684 30.67489 17.442584 42.704258c0 0 0.601468 0 0.601469 0.601469l451.101321 451.101321c23.457269 23.457269 61.34978 23.457269 84.807049 0s23.457269-61.34978 0-84.807048L371.097252 511.398532z
+        </StreamGeometry>
+        <StreamGeometry x:Key="mic_regular">M12 1a1 1 0 0 1 1 1v11a1 1 0 1 1-2 0V2a1 1 0 0 1 1-1ZM8.5 4.5A3.5 3.5 0 0 1 12 1v2a1.5 1.5 0 0 0-1.5 1.5V11a1.5 1.5 0 0 0 3 0V4.5A3.5 3.5 0 0 1 12 1v2a1.5 1.5 0 0 0 1.5 1.5V11a1.5 1.5 0 0 0-3 0V4.5Z</StreamGeometry>
+        <StreamGeometry x:Key="emoji_regular">M12 2C6.477 2 2 6.477 2 12s4.477 10 10 10 10-4.477 10-10S17.523 2 12 2zM4 12a8 8 0 1 1 16 0 8 8 0 0 1-16 0zm3.5-1a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3zm5 0a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3zm3.5 4.5c-1.5 1.5-3.5 2-5 2s-3.5-.5-5-2a1 1 0 0 1 1.5-1.3c1 1 2.5 1.3 3.5 1.3s2.5-.3 3.5-1.3a1 1 0 0 1 1.5 1.3z</StreamGeometry>
+        <StreamGeometry x:Key="send_regular">
+            M1015.485274 476.463913c-7.599113-15.198226-20.197642-27.796755-35.395868-35.395868L114.790411 8.418547c-18.997782-9.498891-40.495273-10.998716-60.592927-4.299498S17.901721 25.01661 8.40283 43.914404C-1.496015 63.812081-2.695875 87.009374 5.303191 107.806946l155.381863 404.252812L5.303191 916.212582c-7.599113 19.797689-6.999183 41.395168 1.599814 60.692915 8.598996 19.397736 24.297164 34.196008 43.994864 41.795122 9.198926 3.499591 18.797806 5.299381 28.496674 5.299381 12.198576 0 24.397152-2.799673 35.495856-8.299031L980.089406 582.951483c39.095436-19.597712 54.993581-67.392133 35.395868-106.48757zM79.094578 944.509279l151.182353-392.954131h310.363771c21.797456 0 39.49539-17.697934 39.49539-39.49539s-17.697934-39.49539-39.49539-39.49539H230.276931L79.494531 79.210284l865.199007 432.649497L79.094578 944.509279z
+        </StreamGeometry>
+    </UserControl.Resources>
+    <!-- 将最外层的Grid改为DockPanel，这样可以更好地处理键盘弹出时的布局 -->
+    <Grid RowDefinitions="Auto,*,Auto" x:Name="DialogueGrid">
+        <!-- 顶部标题栏 -->
+        <Grid Grid.Row="0" DockPanel.Dock="Top" Background="#f7f7f7" Height="50">
+            <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="16,0">
+                <PathIcon Tapped="BackListView" Foreground="Black" Data="{StaticResource back_regular}"></PathIcon>
+                <TextBlock Margin="15,0" Foreground="Black" Text="{Binding DialogueUser}" FontSize="18"
+                           FontWeight="Bold" />
+            </StackPanel>
+        </Grid>
+
+        <ScrollViewer x:Name="MessageScroller" Grid.Row="1" VerticalScrollBarVisibility="Auto" VerticalAlignment="Top">
+            <ItemsControl ItemsSource="{Binding DialogueMessages}">
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <Border Margin="10,5" Padding="10">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+
+                                <!-- 左侧头像 (对方消息) -->
+                                <Border Width="40" Height="40" 
+                                       CornerRadius="20" 
+                                       ClipToBounds="True"
+                                       Grid.Column="0"
+                                       IsVisible="{Binding !IsSelf}">
+                                    <Image Source="{Binding Avatar}" 
+                                           Stretch="UniformToFill"/>
+                                </Border>
+                                
+                                <!-- 消息内容 -->
+                                <StackPanel Grid.Column="1" 
+                                          Margin="10,0"
+                                          HorizontalAlignment="{Binding IsSelf, Converter={StaticResource DialogueUserConverter}}">
+                                    <!-- 消息文本 -->
+                                    <Border Background="{Binding IsSelf, Converter={StaticResource DialogueTextConverter}}"
+                                           CornerRadius="3"  
+                                           HorizontalAlignment="{Binding IsSelf, Converter={StaticResource DialogueUserConverter}}"
+                                           Padding="10">
+                                        <TextBlock FontWeight="Bold" Text="{Binding Content}"
+                                                 TextWrapping="Wrap"
+                                                 Foreground="Black"/>
+                                    </Border>
+                                </StackPanel>
+
+                                <!-- 右侧头像 (自己的消息) -->
+                                <Border Width="40" Height="40" 
+                                       CornerRadius="20" 
+                                       ClipToBounds="True"
+                                       Grid.Column="2"
+                                       IsVisible="{Binding IsSelf}">
+                                    <Image Source="{Binding Avatar}" 
+                                           Stretch="UniformToFill"/>
+                                </Border>
+                            </Grid>
+                        </Border>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+        </ScrollViewer>
+        <!-- 底部输入区域 -->
+        <Grid Grid.Row="2" DockPanel.Dock="Bottom" Background="#f7f7f7" ColumnDefinitions="Auto,*,Auto" Margin="0">
+            <!-- 语音按钮 -->
+            <Button Grid.Column="0"
+                    Width="40" Height="40"
+                    CornerRadius="20"
+                    Background="Transparent"
+                    Padding="8">
+                <PathIcon Data="{StaticResource mic_regular}" Foreground="#666" />
+            </Button>
+
+            <!-- 输入框 -->
+            <TextBox Grid.Column="1"
+                     Margin="8,0" x:Name="TextInput"
+                     Height="40"
+                     Text="{Binding TextInput}"
+                     VerticalContentAlignment="Center"
+                     Watermark="输入消息..."
+                     CornerRadius="20" />
+
+            <!-- 表情和发送按钮 -->
+            <StackPanel Grid.Column="2"
+                        Orientation="Horizontal"
+                        Spacing="8">
+                <Button Width="40" Height="40"
+                        CornerRadius="20"
+                        Background="Transparent"
+                        Padding="8">
+                    <PathIcon Data="{StaticResource emoji_regular}" Foreground="#666" />
+                </Button>
+                <Button Width="35" Height="35"
+                        CornerRadius="20" Margin="2.5"
+                        Background="#07C160" Command="{Binding SendMessageCommand}"
+                        CommandParameter="{Binding ElementName=MessageScroller}"
+                        Padding="8">
+                    <PathIcon Data="{StaticResource send_regular}" Foreground="White" />
+                </Button>
+            </StackPanel>
+        </Grid>
+    </Grid>
+</UserControl>

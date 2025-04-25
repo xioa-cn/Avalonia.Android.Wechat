@@ -1,0 +1,118 @@
+﻿<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="AvaloniaApplication.Views.Components.UserMainView">
+    <UserControl.Styles>
+        <Style Selector="Button.menuButton">
+            <Setter Property="Background" Value="#2a3492" />
+            <Setter Property="Foreground" Value="White" />
+            <Setter Property="Padding" Value="15" />
+            <Setter Property="CornerRadius" Value="10" />
+            <Setter Property="HorizontalAlignment" Value="Stretch" />
+        </Style>
+        <Style Selector="PathIcon.navPath">
+            <Setter Property="Foreground" Value="White"></Setter>
+        </Style>
+
+        <Style Selector="Button.navButton">
+            <Setter Property="Background" Value="Transparent" />
+            <Setter Property="Foreground" Value="#6b75d1" />
+        </Style>
+        <Style Selector="PathIcon">
+            <Setter Property="Width" Value="20" />
+            <Setter Property="Height" Value="20" />
+        </Style>
+    </UserControl.Styles>
+    <StackPanel>
+        <!-- 顶部栏 -->
+        <Grid Grid.Row="0" Margin="20,40,20,0">
+            <Button HorizontalAlignment="Left" Background="Transparent">
+                <PathIcon Data="{StaticResource menu_regular}" Foreground="White" />
+            </Button>
+            <Button HorizontalAlignment="Right" Background="Transparent">
+                <PathIcon Data="{StaticResource more_vertical_regular}" Foreground="White" />
+            </Button>
+        </Grid>
+        <!-- 主要内容 -->
+        <StackPanel Grid.Row="1" Margin="20,20,20,0">
+            <!-- 用户信息卡片 -->
+            <Border Background="#2196f3" CornerRadius="25" Padding="20">
+                <Grid ColumnDefinitions="Auto,*">
+                    <Border Width="60" Height="60" CornerRadius="30" ClipToBounds="True">
+                        <Image Source="/Assets/header.png" Stretch="UniformToFill" />
+                    </Border>
+                    <StackPanel Grid.Column="1" Margin="15,0,0,0" VerticalAlignment="Center">
+                        <TextBlock Text="xioa 💫"
+                                   Foreground="White"
+                                   FontSize="20"
+                                   FontWeight="SemiBold"
+                                   FontFamily="Segoe UI Emoji, Apple Color Emoji, Noto Color Emoji, Segoe UI Symbol" />
+                        <StackPanel Orientation="Horizontal" Spacing="5" Margin="0,5,0,0">
+                            <PathIcon Data="{StaticResource location_regular}" Foreground="White" Width="12" />
+                            <TextBlock VerticalAlignment="Center" Text="Beijing, China" Foreground="White"
+                                       FontSize="12" />
+                        </StackPanel>
+                    </StackPanel>
+                </Grid>
+            </Border>
+
+            <!-- 数据统计 -->
+            <TextBlock Text="Data" Foreground="White" FontSize="24" FontWeight="Bold" Margin="0,30,0,20" />
+            <Grid ColumnDefinitions="*,*" Margin="0,0,0,20">
+                <Border Background="#2962ff" CornerRadius="20" Margin="0,0,10,0" Padding="20">
+                    <StackPanel>
+                        <TextBlock Text="255" Foreground="White" FontSize="24" FontWeight="Bold" />
+                        <TextBlock Text="Fork" Foreground="White" FontSize="14" Opacity="0.8" />
+                    </StackPanel>
+                </Border>
+                <Border Grid.Column="1" Background="#e91e63" CornerRadius="20" Margin="10,0,0,0" Padding="20">
+                    <StackPanel>
+                        <TextBlock Text="8833" Foreground="White" FontSize="24" FontWeight="Bold" />
+                        <TextBlock Text="Star" Foreground="White" FontSize="14" Opacity="0.8" />
+                    </StackPanel>
+                </Border>
+            </Grid>
+
+            <!-- 菜单列表 -->
+            <StackPanel Spacing="15">
+                <Button Classes="menuButton">
+                    <Grid ColumnDefinitions="Auto,*,Auto">
+                        <PathIcon Data="{StaticResource calendar_regular}" />
+                        <TextBlock Grid.Column="1" Text="页面" Margin="15,0" />
+                        <PathIcon Grid.Column="2" Data="{StaticResource chevron_right_regular}" />
+                    </Grid>
+                </Button>
+                <Button Classes="menuButton">
+                    <Grid ColumnDefinitions="Auto,*,Auto">
+                        <PathIcon Data="{StaticResource data_histogram_regular}" />
+                        <TextBlock Grid.Column="1" Text="页面" Margin="15,0" />
+                        <PathIcon Grid.Column="2" Data="{StaticResource chevron_right_regular}" />
+                    </Grid>
+                </Button>
+                <Button Classes="menuButton">
+                    <Grid ColumnDefinitions="Auto,*,Auto">
+                        <PathIcon Data="{StaticResource book_regular}" />
+                        <TextBlock Grid.Column="1" Text="页面" Margin="15,0" />
+                        <PathIcon Grid.Column="2" Data="{StaticResource chevron_right_regular}" />
+                    </Grid>
+                </Button>
+                <Button Classes="menuButton">
+                    <Grid ColumnDefinitions="Auto,*,Auto">
+                        <PathIcon Data="{StaticResource box_regular}" />
+                        <TextBlock Grid.Column="1" Text="页面" Margin="15,0" />
+                        <PathIcon Grid.Column="2" Data="{StaticResource chevron_right_regular}" />
+                    </Grid>
+                </Button>
+                <Button Classes="menuButton">
+                    <Grid ColumnDefinitions="Auto,*,Auto">
+                        <PathIcon Data="{StaticResource heart_regular}" />
+                        <TextBlock Grid.Column="1" Text="页面" Margin="15,0" />
+                        <PathIcon Grid.Column="2" Data="{StaticResource chevron_right_regular}" />
+                    </Grid>
+                </Button>
+            </StackPanel>
+        </StackPanel>
+    </StackPanel>
+</UserControl>
